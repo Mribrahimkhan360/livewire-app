@@ -67,7 +67,7 @@
 
                     {{-- Enter serial number --}}
                     <div>
-                        <label class="text-sm text-gray-500">Stock ID</label>
+                        <label class="text-sm text-gray-500">Serial Number</label>
                         <input type="text"
                                name="serial_id[]"
                                class="w-full border rounded px-3 py-2"

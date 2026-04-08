@@ -34,11 +34,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-//        $orders = $this->orderService->getMyOrders();
-////        dd($orders->toArray());
-//        return view('orders.index', compact('orders'));
         $user = auth()->user();
-//        dd($user);
         if ($user->hasRole('admin'))
         {
             $orders = Order::with('orderDetails','user')->latest()->get();
@@ -100,124 +96,55 @@ class OrderController extends Controller
 
     public function storeProductUpload(SaleStoreRequest $request, $id)
     {
+        // 1. order detail & product
+        $orderDetail = OrderDetail::findOrFail($request->orderDetailId);
+        $productId = $orderDetail->product_id;
 
-//        dd($request->all());
-        /*
-        |--------------------------------------------------------------------------
-        | Start: Only admin can upload product
-        |--------------------------------------------------------------------------
-        | Apply conditional logic to hosRole not admin
-        */
+        // dd($productId);
 
-        $user = auth()->user();
+        // 2. user id find out
+        $user_id = $orderDetail->order->user_id;
 
-        if (!$user->hasRole('admin'))
-        {
-            return redirect()->back()->with('success','Only admin can upload product!');
-        }
+        // 3. Serial Numbers
+        $serial_numbers = $request->input('serial_id',[]);
+//         dd($serial_numbers);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Start: Form hidden input $productId and last find out
-        |        $productId_input & $orderDetailPageProductId
-        |--------------------------------------------------------------------------
-        | Apply conditional logic to retrieve the last find out "product_id"
-        */
+        // 4. Get all stock in one query
+        $stocks = Stock::whereIn('serial_number',$serial_numbers)->get();
 
-        $orderDetailId = $request->input('orderDetailId'); // hidden input
-//      dd($orderDetailId); // 18 // order_details table
-        $orderDetailTOProductId = OrderDetail::where('id',$orderDetailId)->first(); // hidden input to product_id find
-//      dd($orderDetailTOProductId->toArray());
-        $productId_input = $orderDetailTOProductId->product_id; // product id find inout form hidden
-        $orderDetailPageProductId = $orderDetailTOProductId->product_id;
-//      dd($orderDetailPageProductId);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Start: user_id find out
-        |--------------------------------------------------------------------------
-        | two table using 'order_details' and 'Order'
-        */
-
-        $orderDetail = OrderDetail::where('id', $orderDetailId)->first();
-        $order = Order::where('id', $orderDetail->order_id)->first();
-
-        $user_id = $order->user_id;
-
-        /*
-        |--------------------------------------------------------------------------
-        | Start: Stock database table from find product_id
-        |--------------------------------------------------------------------------
-        | Apply conditional logic to retrieve the product_id
-        */
-
-        /*
-        |--------------------------------------------------------------------------
-        | Start: Validation Checking
-        |--------------------------------------------------------------------------
-        |
-        */
-        $serialNumbers = $request->input('serial_id');
-
-        $stocks = Stock::whereIn('serial_number',$serialNumbers)->get();
-//         dd($stocks->toArray());
-
-        // 1. missing  serial checking
+        // 5 Check missing serials
         $foundSerials = $stocks->pluck('serial_number')->toArray();
-//        dd($foundSerials);
-        $missingSerials = array_diff($serialNumbers,$foundSerials);
-//        dd($missingSerials);
+        $missingSerials = array_diff($serial_numbers,$foundSerials);
 
         if (!empty($missingSerials))
         {
-            return redirect()->back()->with('error','Invalid Serial Number!');
-        }
-        // I passed an ID inside create.blade.php and matched it with the ID of the 'stock' table
-        $invalidProductStocks = $stocks->where('product_id','!=',$productId_input);
-//        dd($invalidProductStocks->toArray());
-
-        if ($invalidProductStocks->isNotEmpty()){
-            return redirect()->back()->with('error','Stock id is not valid!');
+            return back()->with('error','Invalid serial number!');
         }
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Start: Store data
-        |--------------------------------------------------------------------------
-        |
-        */
-
-
-        $serialNumbers = $request->input('serial_id');
-
-        foreach ($serialNumbers as $sn)
+        // 6. Check product mismatch
+        if ($stocks->where('product_id','!=',$productId)->isNotEmpty())
         {
-            $stock = Stock::where('serial_number',$sn)->first();
-            $stock_id = $stock->id;
-            $stockDbProductId = $stock->product_id;
+            return back()->with('error','Stock not matched with product!');
+        }
+        // 7. Lop with foreach
 
-//            dump($stockDbProductId);
+        foreach ($stocks as $stock)
+        {
+            $exists = Sale::where('stock_id',$stock->id)->exists();
+            if ($exists)
+            {
+                return back()->with('error','Serial number already sold!');
+            }
+            // store
             Sale::create([
-                'user_id' => $user_id,
-                'stock_id' => $stock_id
+                'user_id'   => $user_id,
+                'stock_id'  => $stock->id,
             ]);
-
-            return redirect()->back()->with('success','successfully upload product!');
         }
 
-        $stocks = Stock::whereIn('serial_number', $serialNumbers)->get();
-
-
-
+        return back()->with('success','Successfully uploaded product!');
     }
-
-
-//    public function storeProductUpload(Request $request, $id)
-//    {
-//        $orderDetail = $this->orderService->sale($id);
-//        return view('orders.sale', compact('orderDetail'));
-//    }
 
 
     /**

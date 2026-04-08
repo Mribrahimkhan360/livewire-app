@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="min-h-screen bg-gray-50 py-8 px-4">
+<div class="min-h-screen py-8 px-4">
     <div class="max-w-2xl mx-auto">
 
         {{-- Header --}}
@@ -152,6 +152,7 @@
             {{-- Action Buttons --}}
             <div class="flex items-center gap-4">
                 {{-- Confirm Button --}}
+                @can('order_confirm_button')
                 <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
                     @csrf
                     @method('PATCH')
@@ -161,7 +162,9 @@
                         Order Confirm
                     </button>
                 </form>
+                @endcan
 
+                @can('order_cancel_button')
                 {{-- Cancel Button --}}
                 <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST">
                     @csrf
@@ -172,6 +175,7 @@
                         Order Cancel
                     </button>
                 </form>
+                @endcan
 
 {{--                <form action="{{ route('orders.sale')}}" method="POST">--}}
 {{--                    @csrf--}}

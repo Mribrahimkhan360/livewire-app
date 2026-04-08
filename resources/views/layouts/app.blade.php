@@ -539,6 +539,7 @@
                 Orders
             </a>
 
+            @can('sale_report_menu')
             <a href="{{ route('sale-reports.index') }}"
                class="nav-link {{ request()->routeIs('sale-reports.*') ? 'nav-active' : '' }}">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -547,7 +548,7 @@
                 </svg>
                 Sales Reports
             </a>
-
+            @endcan
 
             <a href="{{ route('customers.index') }}"
                class="nav-link {{ request()->routeIs('customers.*') ? 'nav-active' : '' }}">
@@ -559,6 +560,18 @@
                 </svg>
 
                 Customer
+            </a>
+
+            <a href="{{ route('customerSale.index') }}"
+               class="nav-link {{ request()->routeIs('customerSale.*') ? 'nav-active' : '' }}">
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                     viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M5.121 17.804A9 9 0 1118.88 17.8M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+
+                Customer Sale
             </a>
 
         </nav>

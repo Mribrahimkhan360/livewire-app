@@ -14,6 +14,7 @@ class Order extends Model
     | Fillable Fields
     |--------------------------------------------------------------------------
     */
+
     protected $fillable = [
         'user_id',
         'order_status',
@@ -74,8 +75,4 @@ class Order extends Model
         return $this->orderDetails->count();
     }
 
-//    public function orderDetails()
-//    {
-//        return $this->hasMany(OrderDetail::class);
-//    }
 }
