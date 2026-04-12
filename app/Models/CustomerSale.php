@@ -10,12 +10,17 @@ class CustomerSale extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'stock_id',
+        'sale_id',
     ];
 
-    public function stock()
+//    public function stock()
+//    {
+//        return $this->belongsTo(Stock::class);
+//    }
+
+    public function sale()
     {
-        return $this->belongsTo(Stock::class);
+        return $this->belongsTo(Sale::class, 'sale_id');
     }
 
     public function user()

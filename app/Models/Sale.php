@@ -18,6 +18,11 @@ class Sale extends Model
         return $this->belongsTo(Stock::class);
     }
 
+    public function customerSale()
+    {
+        return $this->belongsTo(CustomerSale::class);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

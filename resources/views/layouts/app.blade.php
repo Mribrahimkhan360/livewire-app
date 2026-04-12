@@ -434,11 +434,7 @@
         <!-- Logo -->
         <div class="sidebar-logo">
             <div class="logo-mark">
-                <div class="logo-icon">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-                    </svg>
-                </div>
+                <img src="{{ asset('logo.png') }}" alt="" class="h-[26px]">
                 <div>
 {{--                    <div class="logo-text"></div>--}}
                 </div>
@@ -530,7 +526,7 @@
                 Stocks
             </a>
             @endcan
-
+            @can('order_distributor_button')
             <a href="{{ route('orders.index') }}"
                class="nav-link {{ request()->routeIs('orders.*') ? 'nav-active' : '' }}">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -538,6 +534,7 @@
                 </svg>
                 Orders
             </a>
+            @endcan
 
             @can('sale_report_menu')
             <a href="{{ route('sale-reports.index') }}"
@@ -584,7 +581,9 @@
                 </div>
                 <div class="sidebar-user-info">
                     <div class="sidebar-user-name">{{ Auth::user()->name }}</div>
-                    <div class="sidebar-user-role">Administrator</div>
+                    <div class="sidebar-user-role">
+                        {{ Auth::user()->getRoleNames()->implode(', ') }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -607,7 +606,9 @@
                     </svg>
                 </button>
 
-                <h2 class="page-title">{{ $header ?? 'Dashboard' }}</h2>
+                <h2 class="text-lg font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                    {{ ucfirst(str_replace('.', ' ', Route::currentRouteName())) }}
+                </h2>
             </div>
 
             <div class="topbar-right">
