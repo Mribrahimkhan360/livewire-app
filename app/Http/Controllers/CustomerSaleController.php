@@ -25,7 +25,9 @@ class CustomerSaleController extends Controller
         $foundSerial = Stock::whereIn('serial_number',$serialNumbers)->pluck('serial_number')->toArray();;
 
         $missingSerial = array_diff($serialNumbers,$foundSerial);
-        $stockIds = Stock::whereIn('serial_number',$serialNumbers)->pluck('id')->toArray();
+
+        $stockIds = Stock::whereIn('serial_number', $serialNumbers)->pluck('id')->toArray();
+
         $saleIds = Sale::whereIn('stock_id',$stockIds)->pluck('id')->toArray();
 
         $existStock = Sale::whereIn('stock_id', $stockIds)->exists();
@@ -33,7 +35,9 @@ class CustomerSaleController extends Controller
         $missingStock = array_diff($stockIds,$foundStockId);
 
         $validUserId = Sale::whereIn('stock_id', $stockIds)->pluck('user_id')->toArray();
+//        dd($validUserId);
         $authUserId = auth()->id();
+//        dd($authUserId);
 
         if (in_array($authUserId, $validUserId)) {
 
@@ -46,11 +50,11 @@ class CustomerSaleController extends Controller
                 return back()->with('error', 'Invalid serial number!');
             }
             if ($missingStock) {
-                return back()->with('error', 'Stock id does not exist!');
+                return back()->with('error', 'Stock is does not exist!');
             }
 
             if (!$existStock) {
-                return back()->with('error', 'Stock id does not exist!');
+                return back()->with('error', 'Stock is does not exist!');
             }
             $userId = $request->input('user_id');
             if (!$userId) {
@@ -63,6 +67,7 @@ class CustomerSaleController extends Controller
                     'sale_id' => $saleId,
                 ]);
             }
+
             return back()->with('success', 'Successfully Customer sale!');
         }else{
             return back()->with('error','This serial number can not exist!');

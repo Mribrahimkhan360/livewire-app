@@ -142,7 +142,6 @@ class OrderController extends Controller
                 'stock_id'  => $stock->id,
             ]);
         }
-
         return back()->with('success','Successfully uploaded product!');
     }
 
