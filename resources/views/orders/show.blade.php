@@ -12,6 +12,9 @@
                 </svg>
                 Back to Orders
             </a>
+            <a href="{{ route('pdf.show', $order->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md text-sm font-medium transition">
+                Invoice
+            </a>
             <div class="flex items-center justify-between">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900">
@@ -176,15 +179,6 @@
                     </button>
                 </form>
                 @endcan
-
-{{--                <form action="{{ route('orders.sale')}}" method="POST">--}}
-{{--                    @csrf--}}
-
-{{--                    <button type="submit"--}}
-{{--                            class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 transition ml-2">--}}
-{{--                        Upload Product--}}
-{{--                    </button>--}}
-{{--                </form>--}}
             </div>
 
         </div>

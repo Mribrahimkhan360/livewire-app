@@ -53,6 +53,7 @@ class Order extends Model
         return $this->hasMany(OrderDetail::class);
     }
 
+
     /*
     |--------------------------------------------------------------------------
     | Accessors
@@ -74,5 +75,6 @@ class Order extends Model
     {
         return $this->orderDetails->count();
     }
+
 
 }

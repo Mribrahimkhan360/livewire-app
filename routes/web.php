@@ -12,6 +12,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\SaleReportController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CustomerSaleController;
+use App\Http\Controllers\UserMappingController;
+use App\Http\Controllers\PdfController;
 
 
 
@@ -38,6 +40,7 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
 
     Route::resource('users', UserController::class);
+    Route::resource('userMapping', UserMappingController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
 
@@ -47,6 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('orders',OrderController::class);
 
     Route::resource('customerSale',CustomerSaleController::class);
+
+    Route::resource('pdf', PdfController::class);
 
 
 //    Route::resource('orders', OrderController::class);

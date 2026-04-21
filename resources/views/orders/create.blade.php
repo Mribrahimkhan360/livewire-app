@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="min-h-screen bg-gray-50 py-8 px-4">
         <div class="max-w-2xl mx-auto">
-
             {{-- Header --}}
             <div class="mb-8">
                 <a href="{{ route('orders.index') }}"
@@ -20,24 +19,6 @@
                 @csrf
 
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-
-                    {{-- Order Status --}}
-{{--                    <div class="p-6 border-b border-gray-100">--}}
-{{--                        <label class="block text-sm font-semibold text-gray-700 mb-2">Order Status</label>--}}
-{{--                        <select name="order_status"--}}
-{{--                                class="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-gray-700 text-sm--}}
-{{--                                   focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent--}}
-{{--                                   bg-gray-50 @error('order_status') border-red-400 @enderror">--}}
-{{--                            @foreach($statuses as $status)--}}
-{{--                                <option value="{{ $status }}" {{ old('order_status', 'pending') === $status ? 'selected' : '' }}>--}}
-{{--                                    {{ ucfirst($status) }}--}}
-{{--                                </option>--}}
-{{--                            @endforeach--}}
-{{--                        </select>--}}
-{{--                        @error('order_status')--}}
-{{--                        <p class="text-red-500 text-xs mt-1.5">{{ $message }}</p>--}}
-{{--                        @enderror--}}
-{{--                    </div>--}}
 
                     {{-- Products Section --}}
                     <div class="p-6">
@@ -117,7 +98,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-
                             @else
                                 {{-- Default first row --}}
                                 <div class="product-row flex items-start gap-3 p-4 bg-gray-50 rounded-xl border border-gray-100">
@@ -149,10 +129,8 @@
                                             </svg>
                                         </button>
                                     </div>
-
                                 </div>
                             @endif
-
                         </div>
                     </div>
 

@@ -52,9 +52,7 @@ class StockController extends Controller
     public function store(StockStoreRequest $request)
     {
         $this->stockService->createBulkStocks($request->validated());
-
         $count = count($request->validated('serial_number'));
-
         return redirect()
             ->route('stocks.index')
             ->with('success', $count . ' stock entries created successfully.');

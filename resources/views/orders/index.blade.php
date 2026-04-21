@@ -53,6 +53,7 @@
                             @endcan
                             <th class="text-left px-6 py-4">Status</th>
                             <th class="text-left px-6 py-4">Date</th>
+                            <th class="text-left px-6 py-4">Invoice</th>
                             <th class="text-right px-6 py-4">Actions</th>
                         </tr>
                     </thead>
@@ -65,7 +66,7 @@
 
                                 {{-- Order ID --}}
                                 <td class="px-6 py-4">
-                                    <span class="font-mono font-semibold text-gray-800">#{{ str_pad($order->id, 5, '0', STR_PAD_LEFT) }}</span>
+                                    <span class="font-mono font-semibold text-gray-800">{{ $order->id }}</span>
                                 </td>
 
                                 {{-- Total Quantity --}}
@@ -95,12 +96,15 @@
                                 <td class="px-6 py-4 text-gray-500">
                                     {{ $order->created_at->format('d M Y') }}
                                 </td>
-
+                                <td class="px-4 py-3">
+                                    <a href="{{ route('pdf.show', $order->id) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md text-sm font-medium transition">
+                                        Invoice
+                                    </a>
+                                </td>
                                 {{-- Actions --}}
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
 
-                                        {{-- View --}}
                                         <a href="{{ route('orders.show', $order->id) }}"
                                            class="p-2 rounded-lg text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 transition"
                                            title="View">

@@ -1,4 +1,3 @@
-{{-- resources/views/stocks/create.blade.php --}}
 <x-app-layout>
 <div class="max-w-xl">
     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">

@@ -58,9 +58,16 @@
             box-shadow: 4px 0 24px rgba(0,0,0,0.18);
         }
 
-        #sidebar.is-open,
+        /* mobile open state */
+        #sidebar.is-open {
+            transform: translateX(0);
+        }
+
+        /* desktop always open */
         @media (min-width: 1024px) {
-            #sidebar { transform: translateX(0); }
+            #sidebar {
+                transform: translateX(0);
+            }
         }
 
         /* Sidebar logo bar */
@@ -463,9 +470,29 @@
                 </svg>
                 Dashboard
             </a>
+            <p class="nav-section">Management</p>
+            @can('user_mapping_menu')
+
+                <a href="{{ route('userMapping.index') }}"
+                   class="nav-link {{ request()->routeIs('userMapping.*') ? 'nav-active' : '' }}">
+                    <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <!-- Users -->
+                        <circle cx="6" cy="8" r="3"/>
+                        <circle cx="18" cy="8" r="3"/>
+
+                        <!-- Connection -->
+                        <path d="M9 12h6"/>
+                        <path d="M9 12l2-2"/>
+                        <path d="M9 12l2 2"/>
+                        <path d="M15 12l-2-2"/>
+                        <path d="M15 12l-2 2"/>
+                    </svg>
+                    Users Mapping
+                </a>
+            @endcan
 
             @can('user_menu')
-                <p class="nav-section">Management</p>
+
             <a href="{{ route('users.index') }}"
                class="nav-link {{ request()->routeIs('users.*') ? 'nav-active' : '' }}">
                 <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -473,7 +500,11 @@
                 </svg>
                 Users
             </a>
+
             @endcan
+
+
+
 
             @can('role_menu')
             <a href="{{ route('roles.index') }}"
